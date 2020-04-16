@@ -94,6 +94,29 @@ after_bundle do
   rails_command "generate devise User"
 end
 
+# Capistrano  + Unicorn
+gem 'capistrano', '~> 3.1', group: :development
+gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.6', group: :development
+gem 'capistrano-bundler', group: :development
+gem 'capistrano-rails', '~> 1.1.0', group: :development
+gem 'capistrano-rails-console', group: :development
+gem 'unicorn'
+# gem 'unicorn-rails' # might not be needed ?
+gem 'capistrano3-unicorn', '~> 0.2.1', group: :development
+
+after_bundle do
+  run 'bundle exec cap install'
+  # Uncomment requires
+  ["rbenv", "bundler", "rails/assets", "rails/migrations"].each do |key|
+    gsub_file "Capfile", "# require \"capistrano/#{key}\"", "require \"capistrano/#{key}\""
+  end
+  inject_into_file 'Capfile', "require 'capistrano3/unicorn'"
+end
+
+# Copy config folder
+say "Copying config folder"
+run "cp -fR ~/workspace/rails-template/files/config/* config"
+
 # Database setup
 say "--- Database setup ---"
 gsub_file "config/database.yml", /password:$/, "password: root"
