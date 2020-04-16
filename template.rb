@@ -87,3 +87,18 @@ gem 'browser_warrior', '>= 0.11.0'
 after_bundle do
   generate 'browser_warrior:install'
 end
+
+# Devise
+say "Applying Devise ..."
+gem 'devise', '~> 4.7', '>= 4.7.1'
+after_bundle do 
+  rails_command "generate devise:install"
+  environment 'config.action_mailer.default_url_options = {host: "http://CHANGE.ME"}', env: 'production'
+  environment 'config.action_mailer.default_url_options = {host: \'localhost\', port: 3000}', env: 'development'
+  inject_into_file 'app/views/layouts/application.html.haml', after: "%body\n" do <<~EOF
+    \t\t%p.notice= notice
+    \t\t%p.alert= alert
+    EOF
+  end
+  rails_command "generate devise User"
+end
