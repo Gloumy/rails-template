@@ -64,3 +64,13 @@ after_bundle do
   git :commit => '-qm "add Foundation 6"'
   say "--- /Foundation 6 ---"
 end
+
+# Simple Form
+say '--- Simple Form ---'
+gem 'simple_form', '~> 5.0', '>= 5.0.2'
+after_bundle do
+  generate 'simple_form:install', '--foundation'
+end
+git :add => '-A'
+git :commit => '-qm "add simple form"'
+say '--- /Simple Form ---'
