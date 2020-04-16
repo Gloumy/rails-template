@@ -74,3 +74,9 @@ end
 git :add => '-A'
 git :commit => '-qm "add simple form"'
 say '--- /Simple Form ---'
+
+# active_storage
+say 'Applying active_storage...'
+after_bundle do
+  rails_command 'active_storage:install'
+end
