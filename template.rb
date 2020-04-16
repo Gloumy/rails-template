@@ -18,6 +18,15 @@ git :add => '-A'
 git :commit => '-qm "add HAML support"'
 say "--- /HAML ---"
 
+# Database setup
+say "--- Database setup ---"
+gsub_file "config/database.yml", /password:$/, "password: root"
+rails_command "db:create"
+rails_command "db:migrate"
+git :add => '-A'
+git :commit => '-qm "DB setup"'
+say "--- /Database setup ---"
+
 # Foundation 6
 after_bundle do
   say "--- Foundation 6 ---"
