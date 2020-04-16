@@ -80,3 +80,10 @@ say 'Applying active_storage...'
 after_bundle do
   rails_command 'active_storage:install'
 end
+
+# Browser Warrior
+say "Applying browser_warrior..."
+gem 'browser_warrior', '>= 0.11.0'
+after_bundle do
+  generate 'browser_warrior:install'
+end
