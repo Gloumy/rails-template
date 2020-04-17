@@ -5,6 +5,15 @@ git :add => '-A'
 git :commit => '-qm "initial commit"'
 say "--- /GIT ---"
 
+# Database setup
+say "--- Database setup ---"
+gsub_file "config/database.yml", /password:$/, "password: root"
+rails_command "db:create"
+rails_command "db:migrate"
+git :add => '-A'
+git :commit => '-qm "DB setup"'
+say "--- /Database setup ---"
+
 # HAML
 say "--- HAML ---"
 gem 'haml-rails'
@@ -125,11 +134,5 @@ end
 say "Copying config folder"
 run "cp -fR ~/workspace/rails-template/files/config/* config"
 
-# Database setup
-say "--- Database setup ---"
-gsub_file "config/database.yml", /password:$/, "password: root"
-rails_command "db:create"
+# Migrate again
 rails_command "db:migrate"
-git :add => '-A'
-git :commit => '-qm "DB setup"'
-say "--- /Database setup ---"
