@@ -20,7 +20,7 @@ gem 'haml-rails'
 gem 'html2haml', :group => :development
 require 'html2haml'
 say "convert layout to HAML"
-rails_command "generate haml:application_layout convert"
+generate "haml:application_layout convert"
 say "remove old ERB layout"
 run "rm -rf app/views/layouts/application.html.erb"
 git :add => '-A'
@@ -65,6 +65,11 @@ after_bundle do
   say "--- /Foundation 6 ---"
 end
 
+# Root landing
+generate "controller home show"
+route "root to: 'home#show'"
+run "cp -f ~/workspace/rails-template/files/views/home/show.html.haml app/views/home"
+
 # Simple Form
 say '--- Simple Form ---'
 gem 'simple_form', '~> 5.0', '>= 5.0.2'
@@ -92,7 +97,7 @@ end
 say "Applying Devise ..."
 gem 'devise', '~> 4.7', '>= 4.7.1'
 after_bundle do 
-  rails_command "generate devise:install"
+  generate "devise:install"
   environment 'config.action_mailer.default_url_options = {host: "http://CHANGE.ME"}', env: 'production'
   environment 'config.action_mailer.default_url_options = {host: \'localhost\', port: 3000}', env: 'development'
   inject_into_file 'app/views/layouts/application.html.haml', after: "%body\n" do <<~EOF
@@ -100,14 +105,14 @@ after_bundle do
     \t\t%p.alert= alert
     EOF
   end
-  rails_command "generate devise User"
+  generate "devise User"
 end
 
 gem 'trestle'
 gem 'trestle-auth'
 after_bundle do
-  rails_command "generate trestle:install"
-  rails_command "generate trestle:auth:install Administrator"
+  generate "trestle:install"
+  generate "trestle:auth:install"
   say "Don't forget to create an Administrator to access trestle !"
 end
 
