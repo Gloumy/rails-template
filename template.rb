@@ -94,6 +94,14 @@ after_bundle do
   rails_command "generate devise User"
 end
 
+gem 'trestle'
+gem 'trestle-auth'
+after_bundle do
+  rails_command "generate trestle:install"
+  rails_command "generate trestle:auth:install Administrator"
+  say "Don't forget to create an Administrator to access trestle !"
+end
+
 # Capistrano  + Unicorn
 gem 'capistrano', '~> 3.1', group: :development
 gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.6', group: :development
