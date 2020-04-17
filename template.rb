@@ -101,11 +101,12 @@ after_bundle do
   environment 'config.action_mailer.default_url_options = {host: "http://CHANGE.ME"}', env: 'production'
   environment 'config.action_mailer.default_url_options = {host: \'localhost\', port: 3000}', env: 'development'
   inject_into_file 'app/views/layouts/application.html.haml', after: "%body\n" do <<~EOF
-    \t\t%p.notice= notice
-    \t\t%p.alert= alert
+    \s\s\s\s%p.notice= notice
+    \s\s\s\s%p.alert= alert
     EOF
   end
   generate "devise User"
+  rails_command "db:migrate"
 end
 
 gem 'trestle'
@@ -114,6 +115,7 @@ after_bundle do
   generate "trestle:install"
   generate "trestle:auth:install"
   say "Don't forget to create an Administrator to access trestle !"
+  rails_command "db:migrate"
 end
 
 # Capistrano  + Unicorn
@@ -138,6 +140,3 @@ end
 # Copy config folder
 say "Copying config folder"
 run "cp -fR ~/workspace/rails-template/files/config/* config"
-
-# Migrate again
-rails_command "db:migrate"
