@@ -101,8 +101,10 @@ after_bundle do
   environment 'config.action_mailer.default_url_options = {host: "http://CHANGE.ME"}', env: 'production'
   environment 'config.action_mailer.default_url_options = {host: \'localhost\', port: 3000}', env: 'development'
   inject_into_file 'app/views/layouts/application.html.haml', after: "%body\n" do <<~EOF
-    \s\s\s\s%p.notice= notice
-    \s\s\s\s%p.alert= alert
+    \s\s\s\s- if notice
+    \s\s\s\s\s\s%p.notice= notice
+    \s\s\s\s- if alert
+    \s\s\s\s\s\s%p.alert= alert
     EOF
   end
   generate "devise User"
@@ -140,3 +142,7 @@ end
 # Copy config folder
 say "Copying config folder"
 run "cp -fR ~/workspace/rails-template/files/config/* config"
+
+# Copy Procfile for Foreman
+say "Copying Procfile"
+run "cp -fR ~/workspace/rails-template/files/Procfile ."
